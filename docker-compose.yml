@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: actabound-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: acta
+      POSTGRES_PASSWORD: actabound_secret
+      POSTGRES_DB: actabound_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U acta -d actabound_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
+    driver: local

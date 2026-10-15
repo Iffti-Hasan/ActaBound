@@ -1,0 +1,316 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum PermissionTier {
+  OBSERVER         // Tier 0: Read-only
+  PLANNER          // Tier 1: Prepare & simulate
+  BOUNDED_EXECUTOR // Tier 2: Execute within mandate bounds
+  OWNER_APPROVAL   // Tier 3: High-impact actions requiring explicit owner sig
+}
+
+enum MandateStatus {
+  ACTIVE
+  EXPIRED
+  REVOKED
+  PAUSED
+}
+
+enum PolicyDecisionType {
+  ALLOW
+  BLOCK
+  REQUIRE_OWNER_APPROVAL
+}
+
+enum TransactionStatus {
+  PROPOSED
+  POLICY_APPROVED
+  POLICY_BLOCKED
+  SIMULATED
+  SIGNED
+  BROADCASTED
+  CONFIRMED
+  REVERTED
+  FAILED
+}
+
+enum RiskLevel {
+  NORMAL
+  CAUTION
+  BLOCKED
+  PAUSED
+  OWNER_ACTION_REQUIRED
+}
+
+enum EvidenceEventType {
+  INTENT_RECEIVED
+  PLAN_CONSTRUCTED
+  MANDATE_APPLIED
+  POLICY_EVALUATED
+  SIMULATION_PERFORMED
+  TRANSACTION_SIGNED
+  TRANSACTION_BROADCAST
+  RECEIPT_CONFIRMED
+  EXECUTION_VERIFIED
+  RISK_TRIGGER_ACTIVATED
+  MANDATE_REVOKED
+  ATTACK_SCENARIO_RUN
+}
+
+model User {
+  id           String             @id @default(uuid())
+  email        String?            @unique
+  walletAddress String?           @unique
+  role         String             @default("owner")
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  wallets      WalletConnection[]
+  mandates     Mandate[]
+  conversations Conversation[]
+}
+
+model WalletConnection {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  address       String
+  chainId       Int
+  isDelegated   Boolean   @default(false)
+  encryptedKey  String?   // AES-256-GCM ciphertext
+  keyIv         String?   // 12-byte IV
+  keyTag        String?   // 16-byte Auth Tag
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Mandate {
+  id                  String             @id @default(uuid())
+  userId              String
+  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                String
+  description         String?
+  status              MandateStatus      @default(ACTIVE)
+  permissionTier      PermissionTier     @default(BOUNDED_EXECUTOR)
+  chainId             Int                @default(11155111) // Sepolia
+  agentAddress        String
+  ownerAddress        String
+  
+  // Numerical limits stored as exact decimal strings or BigInt-compatible strings
+  dailyBudgetLimit    String             // e.g. "200.00"
+  currentDailySpent   String             @default("0.00")
+  maxTransactionLimit String             // e.g. "100.00"
+  protectedReserve    String             // e.g. "200.00"
+  maxPriceImpactBps   Int                @default(100) // 100 bps = 1.0%
+  
+  allowedTokens       String[]           // Array of token contract addresses
+  allowedDestinations String[]           // Array of permitted recipient/DEX addresses
+  allowedMethods      String[]           // e.g. ["transfer", "swap"]
+  
+  validFrom           DateTime           @default(now())
+  validUntil          DateTime
+  version             Int                @default(1)
+  revokedAt           DateTime?
+  revocationReason    String?
+  
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  
+  versions            MandateVersion[]
+  plans               TransactionPlan[]
+  decisions           PolicyDecision[]
+  transactions        TransactionRecord[]
+  evidenceEvents      EvidenceEvent[]
+
+  @@index([userId, status])
+  @@index([agentAddress])
+}
+
+model MandateVersion {
+  id         String   @id @default(uuid())
+  mandateId  String
+  mandate    Mandate  @relation(fields: [mandateId], references: [id], onDelete: Cascade)
+  version    Int
+  snapshot   Json     // Full configuration snapshot
+  digest     String   // SHA-256 fingerprint of the configuration
+  createdAt  DateTime @default(now())
+}
+
+model Conversation {
+  id        String        @id @default(uuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String        @default("Session")
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  messages  ChatMessage[]
+}
+
+model ChatMessage {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           String       // "user" | "assistant" | "system"
+  content        String
+  structuredPlan Json?        // Zod-validated plan payload if generated
+  createdAt      DateTime     @default(now())
+}
+
+model TransactionPlan {
+  id              String            @id @default(uuid())
+  mandateId       String
+  mandate         Mandate           @relation(fields: [mandateId], references: [id])
+  intentType      String            // "transfer" | "swap" | "rebalance"
+  chainId         Int
+  assetIn         String?
+  assetOut        String?
+  amount          String            // Exact decimal string
+  destination     String?
+  calldata        String?
+  rawCalldataHash String?
+  fingerprint     String            // Canonical SHA-256 digest
+  status          TransactionStatus @default(PROPOSED)
+  createdAt       DateTime          @default(now())
+  
+  policyDecisions PolicyDecision[]
+  simulations     SimulationResult[]
+  transactions    TransactionRecord[]
+}
+
+model SimulationResult {
+  id                  String          @id @default(uuid())
+  planId              String
+  plan                TransactionPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  beforeBalances      Json
+  afterBalances       Json
+  estimatedFeeWei     String
+  reserveBreached     Boolean         @default(false)
+  budgetBreached      Boolean         @default(false)
+  projectedExposure   Json?
+  simulatedGasUnits   String
+  isSimulatedOnChain  Boolean         @default(false)
+  createdAt           DateTime        @default(now())
+}
+
+model PolicyDecision {
+  id               String             @id @default(uuid())
+  mandateId        String
+  mandate          Mandate            @relation(fields: [mandateId], references: [id])
+  planId           String
+  plan             TransactionPlan    @relation(fields: [planId], references: [id], onDelete: Cascade)
+  decision         PolicyDecisionType
+  reasonCodes      String[]           // e.g. ["BUDGET_EXCEEDED", "RESERVE_BREACH"]
+  humanExplanation String
+  policyVersion    String             @default("1.0.0")
+  checkedAt        DateTime           @default(now())
+}
+
+model TransactionRecord {
+  id               String            @id @default(uuid())
+  mandateId        String
+  mandate          Mandate           @relation(fields: [mandateId], references: [id])
+  planId           String
+  plan             TransactionPlan   @relation(fields: [planId], references: [id])
+  txHash           String?           @unique
+  blockNumber      BigInt?
+  gasUsed          String?
+  status           TransactionStatus @default(PROPOSED)
+  isLiveTestnet    Boolean           @default(false)
+  verifiedReceipt  Json?
+  revertReason     String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  @@index([mandateId, status])
+}
+
+model RiskSignal {
+  id           String    @id @default(uuid())
+  source       String    // e.g. "ORACLE", "SIMULATION", "MEMPOOL"
+  level        RiskLevel @default(NORMAL)
+  metricName   String
+  metricValue  String
+  threshold    String
+  description  String
+  detectedAt   DateTime  @default(now())
+}
+
+model RiskEvent {
+  id           String    @id @default(uuid())
+  level        RiskLevel
+  actionTaken  String    // e.g. "AGENT_PAUSED", "EXECUTION_BLOCKED"
+  reason       String
+  triggeredAt  DateTime  @default(now())
+  resolvedAt   DateTime?
+}
+
+model FinancialTwinSnapshot {
+  id                 String   @id @default(uuid())
+  timestamp          DateTime @default(now())
+  totalValueUsd      String
+  availableBalance   String
+  protectedReserve   String
+  dailyBudgetLeft    String
+  assetAllocations   Json
+}
+
+model EvidenceEvent {
+  id               String            @id @default(uuid())
+  sequenceNumber   Int               @default(autoincrement())
+  timestamp        DateTime          @default(now())
+  eventType        EvidenceEventType
+  actor            String            // "AI_AGENT" | "POLICY_ENGINE" | "USER"
+  correlationId    String
+  mandateId        String?
+  mandate          Mandate?          @relation(fields: [mandateId], references: [id])
+  payloadHash      String            // SHA-256 of canonical event data
+  previousHash     String            // Cryptographic chain link
+  currentHash      String            // SHA-256(previousHash + payloadHash + seq)
+  details          Json
+  txHash           String?
+  verified         Boolean           @default(true)
+
+  @@index([correlationId])
+  @@index([sequenceNumber])
+}
+
+model EvidenceCheckpoint {
+  id            String   @id @default(uuid())
+  lastSequence  Int
+  checkpointHash String  // Merkle / SHA-256 tree root
+  anchoredAt    DateTime @default(now())
+}
+
+model AttackScenario {
+  id             String      @id
+  name           String
+  threatCategory String
+  description    String
+  expectedResult String
+  runs           AttackRun[]
+}
+
+model AttackRun {
+  id          String         @id @default(uuid())
+  scenarioId  String
+  scenario    AttackScenario @relation(fields: [scenarioId], references: [id])
+  passed      Boolean
+  actualResult String
+  evidenceDigest String
+  durationMs  Int
+  executedAt  DateTime       @default(now())
+}
+
+model SecurityTestResult {
+  id          String   @id @default(uuid())
+  suiteName   String
+  testsCount  Int
+  passedCount Int
+  failedCount Int
+  details     Json
+  runAt       DateTime @default(now())
+}

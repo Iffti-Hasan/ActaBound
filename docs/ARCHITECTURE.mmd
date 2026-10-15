@@ -1,0 +1,90 @@
+graph TD
+    subgraph ClientLayer["Client Layer (Untrusted)"]
+        Browser["Next.js Responsive Web App"]
+        ChatUI["AI Command Center UI"]
+        TwinUI["Financial Twin Visualizer"]
+        MandateUI["Mandate Studio"]
+        ArenaUI["Attack Arena Lab"]
+        LedgerUI["Evidence Ledger UI"]
+    end
+
+    subgraph Boundary["API & Security Boundary"]
+        APIGateway["Next.js Route Handlers & Middleware"]
+        AuthService["Auth & Session Controller (HttpOnly, CSRF, Rate Limiting)"]
+        SecretVault["Isolated Key Store (AES-256-GCM / KMS Provider)"]
+    end
+
+    subgraph CoreServices["Application Services Layer"]
+        AIParser["AI Intent Parser (Zod Schema Validation)"]
+        Planner["Financial Planning & Orchestration Service"]
+        PolicyEngine["Deterministic Policy Engine (Pure, BigInt Math)"]
+        TwinService["Financial Twin Simulation Service"]
+        RiskController["Risk-Triggered Autonomy Controller"]
+        EvidenceService["Evidence Ledger (Hash-Linked Audit Chain)"]
+        AttackArena["Autonomous Attack Arena Engine"]
+    end
+
+    subgraph DataAdapters["External & Persistence Layer"]
+        MarketAdapter["Market & Risk Data Adapter"]
+        DB[(PostgreSQL via Prisma ORM)]
+    end
+
+    subgraph ExecutionLayer["Isolated Execution & Blockchain Layer"]
+        TxBuilder["Transaction Construction & Simulation Service"]
+        SigningAdapter["Isolated Delegated Signer (No LLM Access)"]
+        ChainAdapter["Blockchain Execution Adapter (viem / RPC)"]
+        VerificationService["Receipt & Post-Execution Verification"]
+    end
+
+    subgraph OnChain["On-Chain Environment (EVM Testnet)"]
+        VaultContract["BoundedExecutor Smart Contract"]
+        TokenContract["ERC-20 Assets / Native ETH"]
+        TestnetRPC["EVM Node (Sepolia / Amoy)"]
+    end
+
+    %% Client Interactions
+    Browser --> APIGateway
+    ChatUI --> APIGateway
+    TwinUI --> APIGateway
+    MandateUI --> APIGateway
+    ArenaUI --> APIGateway
+    LedgerUI --> APIGateway
+
+    %% Security Gate
+    APIGateway --> AuthService
+    AuthService --> AIParser
+    AuthService --> Planner
+
+    %% Planning & Policy Flow
+    AIParser -->|"1. Validated Plan"| Planner
+    Planner -->|"2. Verify Mandate"| PolicyEngine
+    PolicyEngine -->|"3. Query Limits"| DB
+    PolicyEngine -->|"4. Check Market Risk"| MarketAdapter
+    PolicyEngine -->|"5. Model Financial Impact"| TwinService
+    PolicyEngine -->|"6. Trigger Risk Control"| RiskController
+
+    %% Execution Isolation Boundary
+    PolicyEngine -->|"7. Approved Intent (Strict Permit)"| TxBuilder
+    TxBuilder -->|"8. Canonical Fingerprint"| EvidenceService
+    TxBuilder -->|"9. Simulation"| ChainAdapter
+    SecretVault -.->|"Restricted Key Access"| SigningAdapter
+    SigningAdapter -->|"10. Sign Typed Payload"| ChainAdapter
+    ChainAdapter -->|"11. Broadcast Tx"| TestnetRPC
+    TestnetRPC --> VaultContract
+    VaultContract --> TokenContract
+
+    %% Verification & Ledger Flow
+    TestnetRPC -->|"12. Tx Receipt"| VerificationService
+    VerificationService -->|"13. Post-Execution Check"| DB
+    VerificationService -->|"14. Append Event"| EvidenceService
+    EvidenceService --> DB
+
+    %% Attack Arena Cross-Verification
+    AttackArena -->|"Execute Scenarios"| PolicyEngine
+    AttackArena -->|"Inspect Ledger"| EvidenceService
+
+    classDef security fill:#fee2e2,stroke:#ef4444,stroke-width:2px;
+    classDef isolated fill:#fef3c7,stroke:#f59e0b,stroke-width:2px;
+    classDef core fill:#dbeafe,stroke:#3b82f6,stroke-width:1px;
+    class SecretVault,SigningAdapter,VaultContract security;
+    class PolicyEngine,EvidenceService isolated;
