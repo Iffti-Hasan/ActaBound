@@ -35,7 +35,7 @@ const NAV_ITEMS = [
   { name: 'Risk Center', href: '/risk', icon: ShieldAlert },
   { name: 'Security & Compliance', href: '/security', icon: ShieldCheck },
   { name: 'Settings', href: '/settings', icon: Settings },
-  { name: 'About / Docs', href: '/about', icon: HelpCircle },
+  { name: 'About', href: '/about', icon: HelpCircle },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
