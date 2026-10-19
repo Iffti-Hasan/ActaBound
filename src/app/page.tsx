@@ -22,9 +22,9 @@ export default function OverviewPage() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="px-2 py-0.5 text-xs font-semibold rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              Topic F: Agent Wallet
+              Autonomous Financial Agent
             </span>
-            <span className="text-xs text-slate-400">Shenzhen FinTechathon 2026</span>
+            <span className="text-xs text-slate-400">Mandate-Governed On-Chain Operations</span>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-white">ActaBound Command Center</h1>
           <p className="text-sm text-slate-400 mt-1 max-w-2xl">

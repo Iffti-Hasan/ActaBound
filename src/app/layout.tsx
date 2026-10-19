@@ -3,8 +3,8 @@ import './globals.css';
 import { AppShell } from '@/components/layout/AppShell';
 
 export const metadata: Metadata = {
-  title: 'ActaBound — Autonomous On-Chain AI Wallet',
-  description: 'Mandate-Governed Autonomous On-Chain Wallet with Verifiable Risk Control for Shenzhen FinTechathon 2026',
+  title: 'ActaBound — Autonomous On-Chain Financial Agent',
+  description: 'Mandate-Governed Autonomous On-Chain Wallet with Verifiable Risk Control and Deterministic Policy Enforcement',
 };
 
 export default function RootLayout({

@@ -9,9 +9,9 @@ export default function AboutPage() {
       <div className="pb-4 border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-2 mb-1">
           <span className="px-2 py-0.5 text-xs font-semibold rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-            <Award className="w-3 h-3" /> Shenzhen FinTechathon 2026
+            <ShieldCheck className="w-3 h-3" /> Autonomous Financial Agent
           </span>
-          <span className="text-xs text-slate-400">International Track &middot; Topic F</span>
+          <span className="text-xs text-slate-400">Enterprise Mandate Engine &middot; Bounded Execution</span>
         </div>
         <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
           ActaBound: Mandate-Governed Autonomous On-Chain Wallet
@@ -22,9 +22,9 @@ export default function AboutPage() {
       </div>
 
       <div className="p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-4 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-        <h2 className="text-sm font-bold text-slate-900 dark:text-white">Competition Submission Overview</h2>
+        <h2 className="text-sm font-bold text-slate-900 dark:text-white">Product Architecture & Mission</h2>
         <p>
-          ActaBound was built specifically for the <strong>2026 Shenzhen International FinTech Competition (FinTechathon)</strong> under the theme <em>&quot;AI as a Financial Participant&quot;</em> for <strong>Topic F: Agent Wallet — Autonomous On-Chain Wallet</strong>.
+          ActaBound is an autonomous on-chain wallet and execution engine designed for secure Web3 operations. It demonstrates that artificial intelligence can autonomously participate in financial protocols safely only when bounded by <strong>deterministic policy controls</strong>, <strong>isolated private signing</strong>, and <strong>cryptographically verifiable evidence trails</strong>.
         </p>
         <p>
           Unlike naive chatbots or transaction simulators, ActaBound enforces genuine bounded autonomy: the AI agent interprets goals, constructs structured plans, and evaluates them against an immutable mandate using a <strong>pure, deterministic policy engine</strong>. If any boundary (daily cap, protected reserve, allowlist, or expiry) is breached, the transaction is blocked before signing or broadcasting.
@@ -62,7 +62,7 @@ export default function AboutPage() {
       </div>
 
       <div className="p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-3 text-xs">
-        <h2 className="text-sm font-bold text-slate-900 dark:text-white">Competition Submission Deliverables</h2>
+        <h2 className="text-sm font-bold text-slate-900 dark:text-white">Documentation & Technical Specifications</h2>
         <ul className="space-y-2 text-slate-500 dark:text-slate-400">
           <li className="flex items-center gap-2">
             <CheckCircle className="w-4 h-4 text-emerald-500" />
@@ -74,15 +74,15 @@ export default function AboutPage() {
           </li>
           <li className="flex items-center gap-2">
             <CheckCircle className="w-4 h-4 text-emerald-500" />
-            <span>Presentation Outline Deck (10 min): <code className="text-slate-300">docs/submission/presentation-outline.md</code></span>
+            <span>Beginner User Guide & Dashboard Manual: <code className="text-slate-300">docs/ACTABOUND_BEGINNER_GUIDE.md</code></span>
           </li>
           <li className="flex items-center gap-2">
             <CheckCircle className="w-4 h-4 text-emerald-500" />
-            <span>Demonstration Script (5 min): <code className="text-slate-300">docs/submission/demo-script.md</code></span>
+            <span>Practical Testing Workbook: <code className="text-slate-300">docs/ACTABOUND_TESTING_WORKBOOK.md</code></span>
           </li>
           <li className="flex items-center gap-2">
             <CheckCircle className="w-4 h-4 text-emerald-500" />
-            <span>Execution Evidence Template: <code className="text-slate-300">docs/submission/execution-evidence-template.md</code></span>
+            <span>Execution Evidence & Audit Trail: <code className="text-slate-300">docs/submission/execution-evidence.md</code></span>
           </li>
         </ul>
       </div>

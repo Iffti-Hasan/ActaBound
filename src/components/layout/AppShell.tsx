@@ -91,14 +91,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        {/* Security & Competition Footer */}
+        {/* Security & System Footer */}
         <div className="p-4 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
           <div className="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400 font-medium mb-1">
             <Radio className="w-3.5 h-3.5 animate-pulse" />
             <span>Policy Guard Active</span>
           </div>
-          <div>Shenzhen FinTechathon 2026</div>
-          <div className="text-[11px] text-slate-400 dark:text-slate-500">Topic F: Autonomous Agent</div>
+          <div>Mandate-Governed Wallet</div>
+          <div className="text-[11px] text-slate-400 dark:text-slate-500">Verifiable Execution Engine</div>
         </div>
       </aside>
 
