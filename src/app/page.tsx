@@ -18,30 +18,30 @@ export default function OverviewPage() {
   return (
     <div className="space-y-6">
       {/* Welcome Banner */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-emerald-900/40 via-slate-900 to-slate-900 border border-emerald-500/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="p-6 rounded-2xl bg-gradient-to-r from-emerald-50 via-teal-50/30 to-white dark:from-emerald-950/60 dark:via-slate-900 dark:to-slate-900 border border-emerald-200/80 dark:border-emerald-500/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-2 py-0.5 text-xs font-semibold rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="px-2.5 py-0.5 text-xs font-semibold rounded-md bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-300/80 dark:border-emerald-500/30">
               Autonomous Financial Agent
             </span>
-            <span className="text-xs text-slate-400">Mandate-Governed On-Chain Operations</span>
+            <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">Mandate-Governed On-Chain Operations</span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">ActaBound Command Center</h1>
-          <p className="text-sm text-slate-400 mt-1 max-w-2xl">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">ActaBound Command Center</h1>
+          <p className="text-sm text-slate-600 dark:text-slate-300 mt-1 max-w-2xl font-normal leading-relaxed">
             Autonomous on-chain agent bounded by deterministic policy controls, isolated private signing, and cryptographic evidence verification.
           </p>
         </div>
         <div className="flex items-center gap-3">
           <Link
             href="/chat"
-            className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-medium text-sm transition-colors flex items-center gap-2 shadow-sm"
+            className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white font-medium text-sm transition-colors flex items-center gap-2 shadow-sm"
           >
             <Bot className="w-4 h-4" />
             Launch AI Agent
           </Link>
           <Link
             href="/arena"
-            className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium text-sm transition-colors border border-slate-700 flex items-center gap-2"
+            className="px-4 py-2 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-sm transition-colors border border-slate-300 dark:border-slate-700 flex items-center gap-2 shadow-sm"
           >
             <Swords className="w-4 h-4" />
             Attack Arena
