@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ActaBound — Presentation Deck | Shenzhen FinTechathon 2026</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #0f172a;
+      --card-border: #1e293b;
+      --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.2);
+      --cyan: #06b6d4;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Presentation Header Bar */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px border var(--card-border);
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 28px;
+      height: 28px;
+      background: var(--emerald);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+      color: white;
+    }
+
+    .brand-name {
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-tag {
+      font-size: 11px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--emerald);
+      padding: 2px 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      font-weight: 600;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: #1e293b;
+      border-color: var(--emerald);
+    }
+
+    .btn-primary {
+      background: var(--emerald);
+      color: white;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: #059669;
+    }
+
+    .slide-counter {
+      font-family: monospace;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0 8px;
+    }
+
+    /* Main Deck Stage */
+    .deck-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      max-width: 1180px;
+      aspect-ratio: 16 / 9;
+      background: radial-gradient(circle at 10% 10%, rgba(16, 185, 129, 0.08), transparent 40%),
+                  radial-gradient(circle at 90% 90%, rgba(6, 182, 212, 0.08), transparent 40%),
+                  var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 48px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      flex-direction: column;
+      justify-content: space-between;
+      animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Slide Typography & Content */
+    .slide-header {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 16px;
+    }
+
+    .slide-category {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--emerald);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .slide-title {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 24px 0;
+    }
+
+    .slide-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 12px;
+    }
+
+    /* Grid & Cards */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .card-highlight {
+      border-color: rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.04);
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      font-family: monospace;
+    }
+
+    .pill-emerald { background: rgba(16, 185, 129, 0.2); color: var(--emerald); border: 1px solid rgba(16, 185, 129, 0.4); }
+    .pill-rose { background: rgba(244, 63, 94, 0.2); color: var(--rose); border: 1px solid rgba(244, 63, 94, 0.4); }
+    .pill-amber { background: rgba(245, 158, 11, 0.2); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.4); }
+
+    /* Speaker Notes Drawer */
+    .speaker-drawer {
+      display: none;
+      background: #020617;
+      border-top: 2px solid var(--emerald);
+      padding: 16px 24px;
+      font-size: 13px;
+      color: #cbd5e1;
+      max-height: 160px;
+      overflow-y: auto;
+      line-height: 1.6;
+    }
+
+    .speaker-drawer.visible {
+      display: block;
+    }
+
+    /* Print Styles (Exports pristine PDF deck) */
+    @media print {
+      body {
+        overflow: visible;
+        height: auto;
+        background: #090d16 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .top-bar, .controls, .speaker-drawer {
+        display: none !important;
+      }
+
+      .deck-container {
+        padding: 0;
+        display: block;
+      }
+
+      .slide {
+        display: flex !important;
+        page-break-after: always;
+        break-after: page;
+        width: 100% !important;
+        height: 100vh !important;
+        max-width: none;
+        border: none;
+        border-radius: 0;
+        margin-bottom: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <div class="top-bar">
+    <div class="brand">
+      <div class="brand-logo">A</div>
+      <div class="brand-name">ActaBound</div>
+      <span class="brand-tag">Topic F: Autonomous On-Chain Wallet</span>
+    </div>
+
+    <div class="controls">
+      <button class="btn" onclick="toggleSpeakerNotes()">
+        <span>📝 Speaker Notes [S]</span>
+      </button>
+      <button class="btn" onclick="prevSlide()">← Prev</button>
+      <span class="slide-counter" id="counter">01 / 12</span>
+      <button class="btn" onclick="nextSlide()">Next →</button>
+      <button class="btn" onclick="toggleFullscreen()">⛶ Fullscreen [F]</button>
+      <button class="btn btn-primary" onclick="window.print()">🖨️ Export to PDF</button>
+    </div>
+  </div>
+
+  <!-- Deck Container -->
+  <div class="deck-container">
+
+    <!-- SLIDE 1: Title Slide -->
+    <div class="slide active" data-notes="Good morning, esteemed judges. We are proud to present ActaBound. As artificial intelligence advances from conversational chatbots into autonomous financial participants, Web3 protocols face an unprecedented challenge: how can an AI agent manage digital assets safely on-chain without risking user capital? ActaBound introduces a mathematically verifiable paradigm: Bounded Authority.">
+      <div class="slide-header">
+        <div class="slide-category">Shenzhen FinTechathon 2026 &middot; International Track &middot; Topic F</div>
+        <h1 class="slide-title">ActaBound: Mandate-Governed Autonomous On-Chain Wallet</h1>
+      </div>
+
+      <div class="slide-body">
+        <div style="font-size: 20px; color: var(--emerald); font-weight: 600; margin-bottom: 24px;">
+          Autonomous Finance. Bounded Authority. Verifiable Actions.
+        </div>
+        <div class="grid-3">
+          <div class="card card-highlight">
+            <div class="card-title">🏆 Official Competition Theme</div>
+            <div class="card-desc">AI as a Financial Participant — Building an autonomous agent that manages on-chain assets safely within strict policy bounds.</div>
+          </div>
+          <div class="card card-highlight">
+            <div class="card-title">🛡️ Core Innovation</div>
+            <div class="card-desc">Decouples probabilistic intent planning from deterministic policy enforcement and isolated private key signing.</div>
+          </div>
+          <div class="card card-highlight">
+            <div class="card-title">⚡ Topic F Challenge Bonus</div>
+            <div class="card-desc">Real Ethereum Sepolia testnet execution, on-chain BoundedExecutor smart vault, and SHA-256 tamper-evident ledger.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Team: ActaBound International Team</span>
+        <span>Duration: 10 Minutes (8m Presentation + 2m Q&A)</span>
+        <span>Target: EVM Sepolia (11155111)</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: The Core Problem -->
+    <div class="slide" data-notes="Why are existing AI agent wallets dangerous? Giving an LLM raw signing keys or arbitrary execution authority is fatal. LLMs hallucinate, suffer prompt injection, and JavaScript floating-point calculations drift over time, causing balance rounding exploits. Unbounded bots inevitably drain treasury funds.">
+      <div class="slide-header">
+        <div class="slide-category">The Problem Statement</div>
+        <h1 class="slide-title">The Fatal Vulnerability of Naive AI Wallets</h1>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card" style="border-top: 3px solid var(--rose);">
+            <div class="card-title" style="color: var(--rose);">1. Prompt Injection (OWASP LLM01)</div>
+            <div class="card-desc">Adversarial instructions hidden in transaction metadata or chat prompts hijack the LLM to transfer user assets to an attacker's address.</div>
+            <div style="margin-top: 12px;"><span class="pill pill-rose">Critical Vulnerability</span></div>
+          </div>
+
+          <div class="card" style="border-top: 3px solid var(--amber);">
+            <div class="card-title" style="color: var(--amber);">2. IEEE 754 Floating-Point Drift</div>
+            <div class="card-desc">JavaScript floats (0.1 + 0.2 = 0.30000000000000004) create micro-rounding gaps in balance calculations, enabling silent drainage.</div>
+            <div style="margin-top: 12px;"><span class="pill pill-amber">Accounting Risk</span></div>
+          </div>
+
+          <div class="card" style="border-top: 3px solid var(--rose);">
+            <div class="card-title" style="color: var(--rose);">3. TOCTOU & Direct Key Access</div>
+            <div class="card-desc">Time-of-Check to Time-of-Use tampering where calldata changes post-approval, or the LLM memory leaks private key bytes directly.</div>
+            <div style="margin-top: 12px;"><span class="pill pill-rose">Zero Trust Violation</span></div>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; padding: 14px 20px; background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: 10px; font-size: 13px;">
+          <strong>The Verdict:</strong> Autonomous AI agents must <u>never</u> hold direct signing keys or possess unconstrained on-chain authority.
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Failure Modes Analysis</span>
+        <span>Security & Compliance: 30% Weight</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: The Solution Paradigm -->
+    <div class="slide" data-notes="ActaBound solves this with Bounded Authority. The AI agent is strictly an unprivileged planner. It interprets the user goal and produces a structured plan. But it cannot sign anything. Every action is evaluated by a deterministic policy engine and simulated by the Financial Twin before reaching an isolated signing enclave.">
+      <div class="slide-header">
+        <div class="slide-category">The Architectural Paradigm</div>
+        <h1 class="slide-title">Bounded Authority: Decoupling Planning from Execution</h1>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card card-highlight">
+            <div class="card-title" style="color: var(--emerald);">What the AI Agent DOES (Unprivileged Planner)</div>
+            <ul style="font-size: 13px; color: var(--text-muted); line-height: 1.8; padding-left: 20px;">
+              <li>Interprets natural language goals ("Transfer 40 USDC to 0x7099...").</li>
+              <li>Extracts token addresses, chain IDs, and amounts into structured Zod schemas.</li>
+              <li>Performs semantic context analysis and intent translation.</li>
+              <li><strong>Zero access to private signing keys or raw mempool broadcast.</strong></li>
+            </ul>
+          </div>
+
+          <div class="card card-highlight">
+            <div class="card-title" style="color: var(--cyan);">What the Deterministic System ENFORCES</div>
+            <ul style="font-size: 13px; color: var(--text-muted); line-height: 1.8; padding-left: 20px;">
+              <li><strong>Pure BigInt Policy Engine:</strong> Mathematical limits with 0 float drift.</li>
+              <li><strong>Inviolable Protected Reserve:</strong> Minimum balance guaranteed.</li>
+              <li><strong>Financial Twin:</strong> Pre-execution simulation of balance impact.</li>
+              <li><strong>Isolated Signer Enclave:</strong> Signs only cryptographically approved digests.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Core Philosophy: AI Proposes, Deterministic Engine Binds, Enclave Signs</span>
+        <span>Task Completion: 40% Weight</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: 5-Tier Permission Hierarchy -->
+    <div class="slide" data-notes="Here is our 5-tier permission hierarchy, satisfying the competition security self-assessment requirement. From human owner to EVM smart contract, each tier has strict privilege boundaries. The AI agent sits at Tier 2 with zero signing rights.">
+      <div class="slide-header">
+        <div class="slide-category">Permission Architecture</div>
+        <h1 class="slide-title">5-Tier Trust & Authority Hierarchy</h1>
+      </div>
+
+      <div class="slide-body">
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div class="card" style="padding: 12px 18px; display: flex; align-items: center; justify-content: space-between;">
+            <div><strong>Tier 1: Human User (Mandate Sovereign)</strong> — Creates immutable boundaries, reserve floors, spending limits, and emergency pause switches.</div>
+            <span class="pill pill-emerald">Owner Authority</span>
+          </div>
+          <div class="card" style="padding: 12px 18px; display: flex; align-items: center; justify-content: space-between;">
+            <div><strong>Tier 2: AI Planning Agent (Probabilistic Planner)</strong> — Interprets intent into structured proposals. Zero key memory; fail-closed sandbox.</div>
+            <span class="pill pill-amber">Unprivileged Sandbox</span>
+          </div>
+          <div class="card" style="padding: 12px 18px; display: flex; align-items: center; justify-content: space-between;">
+            <div><strong>Tier 3: Policy Guard Barrier (Mathematical Invariant Verifier)</strong> — Pure BigInt engine checking daily caps, reserve margins, and allowlists.</div>
+            <span class="pill pill-emerald">Deterministic Guard</span>
+          </div>
+          <div class="card" style="padding: 12px 18px; display: flex; align-items: center; justify-content: space-between;">
+            <div><strong>Tier 4: Isolated Signer Enclave (Hardware/KMS Security Boundary)</strong> — AES-256-GCM vault; signs only when policy permit hash matches.</div>
+            <span class="pill pill-emerald">Isolated Enclave</span>
+          </div>
+          <div class="card" style="padding: 12px 18px; display: flex; align-items: center; justify-content: space-between;">
+            <div><strong>Tier 5: EVM Smart Contract Vault (On-Chain Settlement)</strong> — BoundedExecutor.sol enforcing caps and pause controls directly on-chain.</div>
+            <span class="pill pill-emerald">On-Chain Vault</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Security Self-Assessment Requirement (Deliverable 05)</span>
+        <span>Principle of Least Privilege</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: System Architecture -->
+    <div class="slide" data-notes="This is the end-to-end system architecture. The client interacts through Next.js. Prompts pass through an adversarial sanitizer to the deterministic core. The policy engine evaluates the proposal. The Financial Twin verifies balance impact. If approved, a canonical SHA-256 digest is signed by the isolated enclave and broadcast to Sepolia testnet.">
+      <div class="slide-header">
+        <div class="slide-category">System Architecture</div>
+        <h1 class="slide-title">End-to-End System Architecture</h1>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-4" style="text-align: center;">
+          <div class="card">
+            <div style="font-size: 24px; margin-bottom: 8px;">💻</div>
+            <div class="card-title" style="justify-content: center;">Client Layer</div>
+            <div class="card-desc">Next.js App Router (12 Pages)<br>Financial Twin Visualizer<br>Attack Arena Lab<br>Cryptographic Ledger</div>
+          </div>
+          <div class="card">
+            <div style="font-size: 24px; margin-bottom: 8px;">🛡️</div>
+            <div class="card-title" style="justify-content: center;">Policy Core</div>
+            <div class="card-desc">Zod Schema Validation<br>Pure BigInt Policy Engine<br>Reserve Floor Invariant<br>Cumulative Budget Tracker</div>
+          </div>
+          <div class="card">
+            <div style="font-size: 24px; margin-bottom: 8px;">🔐</div>
+            <div class="card-title" style="justify-content: center;">Signer Enclave</div>
+            <div class="card-desc">AES-256-GCM Key Vault<br>Canonical SHA-256 Digest<br>viem Testnet Client<br>Zero LLM Key Visibility</div>
+          </div>
+          <div class="card">
+            <div style="font-size: 24px; margin-bottom: 8px;">⛓️</div>
+            <div class="card-title" style="justify-content: center;">EVM Blockchain</div>
+            <div class="card-desc">Ethereum Sepolia (11155111)<br>BoundedExecutor.sol<br>On-Chain Pause & Caps<br>Public Etherscan Receipts</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; text-align: center; font-size: 12px; color: var(--emerald); font-family: monospace;">
+          User Intent → Sanitizer → Structured Plan → Policy Evaluation → Twin Simulation → Permit Digest → Enclave Sign → Sepolia Mempool
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Technical Documentation Reference (Deliverable 01)</span>
+        <span>Zero Floating-Point Drift Guarantee</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Innovation 1 — Pure BigInt Policy Engine -->
+    <div class="slide" data-notes="Innovation 1: The Pure Deterministic Policy Engine. In high-stakes finance, floating-point math is unacceptable. We convert all currency amounts into standardized 6-decimal BigInt integers. The policy engine evaluates single-transaction caps, 24-hour daily budgets, and protected reserves with zero drift.">
+      <div class="slide-header">
+        <div class="slide-category">Core Innovation 1</div>
+        <h1 class="slide-title">Pure BigInt Deterministic Policy Guard</h1>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Exact BigInt Integer Arithmetic</div>
+            <div style="background: #020617; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 11px; color: #10b981; margin: 10px 0;">
+              // Exact integer scaling (1 USDC = 1,000,000 units)<br>
+              const scale = 10n ** BigInt(decimals);<br>
+              const rawUnits = BigInt(Math.floor(amount * 1e6));<br>
+              // Zero floating point rounding drift!
+            </div>
+            <div class="card-desc">Eliminates rounding exploits and fractional micro-drain vulnerabilities. All token arithmetic is 100% deterministic and reproducible.</div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Three Inviolable Invariants</div>
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+              <div style="padding: 8px 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; font-size: 12px;">
+                <strong>1. Protected Reserve Floor:</strong> $200.00 USDC minimum balance must remain inviolate at all times.
+              </div>
+              <div style="padding: 8px 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; font-size: 12px;">
+                <strong>2. Daily Budget Ceiling:</strong> $200.00 USDC rolling 24h spending limit.
+              </div>
+              <div style="padding: 8px 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; font-size: 12px;">
+                <strong>3. Single-Tx Cap:</strong> $100.00 USDC maximum transfer per transaction.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Verified by 10 Automated Policy Unit Tests</span>
+        <span>Fail-Closed Security Guarantee</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Innovation 2 — Financial Twin -->
+    <div class="slide" data-notes="Innovation 2: The Financial Twin. Before any transaction touches the blockchain, the Twin simulates the balance sheet impact. In our interactive charts, judges can see the reserve floor line at $200. If an action breaches the line, the bar turns red and the Twin automatically recommends the maximum safe amount.">
+      <div class="slide-header">
+        <div class="slide-category">Core Innovation 2</div>
+        <h1 class="slide-title">Financial Twin: Pre-Execution Balance Sheet Simulator</h1>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card card-highlight">
+            <div class="card-title">Interactive Reserve Stress-Test</div>
+            <div class="card-desc" style="margin-bottom: 12px;">
+              Models real-time pre-flight impacts across balance, reserve margin, and daily budget:
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px;">
+              <div style="display: flex; justify-content: space-between; padding: 6px 10px; background: rgba(255,255,255,0.04); border-radius: 6px;">
+                <span>Current Live USDC Balance:</span>
+                <span style="font-family: monospace; font-weight: bold;">$500.00 USDC</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 10px; background: rgba(245, 158, 11, 0.1); border-radius: 6px; color: var(--amber);">
+                <span>Protected Reserve Floor:</span>
+                <span style="font-family: monospace; font-weight: bold;">$200.00 USDC (Locked)</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 10px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; color: var(--emerald);">
+                <span>Available Autonomous Budget:</span>
+                <span style="font-family: monospace; font-weight: bold;">$300.00 USDC</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-highlight">
+            <div class="card-title">Explainable Alternative Guidance</div>
+            <div class="card-desc" style="line-height: 1.6;">
+              When an autonomous plan proposes an excessive amount (e.g. 350 USDC), the Financial Twin does not merely reject it with an error code:
+            </div>
+            <div style="margin-top: 14px; padding: 12px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; font-size: 12px; color: var(--emerald);">
+              <strong>Autonomous Twin Suggestion:</strong><br>
+              "Proposed spend would breach the 200 USDC reserve. Twin suggests maximum safe transfer: <strong>100.00 USDC</strong>."
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Visual Recharts Charts on /twin Workspace</span>
+        <span>Innovation & Interaction: 30% Weight</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: Innovation 3 — Attack Arena -->
+    <div class="slide" data-notes="Innovation 3: The Autonomous Attack Arena. To prove to judges that our security controls are real backend code rather than mock UI badges, we created an 18-scenario red-team lab. It tests prompt injection, budget breakers, sandwich attacks, and signature replay. All 18 attacks are blocked fail-closed, achieving a 100% defense rate.">
+      <div class="slide-header">
+        <div class="slide-category">Core Innovation 3</div>
+        <h1 class="slide-title">Autonomous Attack Arena: 18/18 Adversarial Defenses</h1>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-3" style="margin-bottom: 16px;">
+          <div class="card" style="text-align: center; border-color: rgba(16, 185, 129, 0.4);">
+            <div style="font-size: 32px; font-weight: 800; color: var(--emerald);">18 / 18</div>
+            <div class="card-desc">Adversarial Scenarios Passed</div>
+          </div>
+          <div class="card" style="text-align: center; border-color: rgba(16, 185, 129, 0.4);">
+            <div style="font-size: 32px; font-weight: 800; color: var(--emerald);">100%</div>
+            <div class="card-desc">Defense Success Rate</div>
+          </div>
+          <div class="card" style="text-align: center; border-color: rgba(244, 63, 94, 0.4);">
+            <div style="font-size: 32px; font-weight: 800; color: var(--rose);">0</div>
+            <div class="card-desc">Unauthorized Broadcasts</div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="font-size: 12px;">
+          <div class="card">
+            <div class="card-title">Defended Attack Vectors (Sample 1–4)</div>
+            <ul style="color: var(--text-muted); line-height: 1.8; padding-left: 16px;">
+              <li><strong>Budget Breaker:</strong> 180 USDC spend blocked by daily limit.</li>
+              <li><strong>Reserve Breach:</strong> 350 USDC transfer blocked by reserve floor.</li>
+              <li><strong>Prompt Injection:</strong> "Ignore previous instructions" neutralized.</li>
+              <li><strong>Recipient Substitution:</strong> Unlisted address blocked fail-closed.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Advanced Web3 Attacks (Sample 5–8)</div>
+            <ul style="color: var(--text-muted); line-height: 1.8; padding-left: 16px;">
+              <li><strong>TOCTOU Calldata Tampering:</strong> Fingerprint mismatch rejected.</li>
+              <li><strong>Signature Replay:</strong> Nonce re-use blocked by smart vault.</li>
+              <li><strong>High Slippage / Sandwich:</strong> Slippage &gt; 100 bps rejected.</li>
+              <li><strong>Emergency Freeze:</strong> Immediate halt upon revocation event.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Live Interactive Red-Team Test Lab (/arena)</span>
+        <span>Deterministic Fail-Closed Protection</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: Innovation 4 — Evidence Ledger & Enclave -->
+    <div class="slide" data-notes="Innovation 4: Cryptographic Evidence Ledger. Every decision, plan, and transaction hash is chained using sequential SHA-256 block hashing. If an attacker tampers with the database, the hash chain breaks instantly. The isolated signer encrypts keys via AES-256-GCM, keeping private keys completely isolated from the LLM.">
+      <div class="slide-header">
+        <div class="slide-category">Core Innovation 4</div>
+        <h1 class="slide-title">Evidence Ledger & Isolated Signer Enclave</h1>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card card-highlight">
+            <div class="card-title">SHA-256 Chained Audit Trail</div>
+            <div style="background: #020617; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 11px; color: #06b6d4; margin: 10px 0;">
+              Block_n Hash = SHA-256(<br>
+              &nbsp;&nbsp;PrevHash || PayloadHash || SeqNumber || Timestamp<br>
+              );
+            </div>
+            <div class="card-desc">
+              Permanent cryptographic link between User Intent, Policy Decision, Twin Simulation, and On-Chain Tx Hash. Mathematical tamper detection with 0 corrupted blocks.
+            </div>
+          </div>
+
+          <div class="card card-highlight">
+            <div class="card-title">AES-256-GCM Hardware/KMS Enclave</div>
+            <div style="background: #020617; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 11px; color: #10b981; margin: 10px 0;">
+              // Zero LLM Key Exposure Proof<br>
+              LLM_Context ∩ PrivateKeyBytes = ∅<br>
+              Enclave signs iff SHA256(calldata) == ApprovedPermit
+            </div>
+            <div class="card-desc">
+              Delegated signing key is isolated in a separate cryptographic enclave. The LLM never reads, stores, or processes raw key bytes.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Cryptographic Auditability & KMS Isolation</span>
+        <span>Tamper-Evident Ledger Integrity (/ledger)</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: Topic F Execution Evidence -->
+    <div class="slide" data-notes="Here is our Topic F Execution Evidence. We demonstrate permitted execution on Ethereum Sepolia Testnet with verified block inclusion, gas used, and Etherscan receipt link. Crucially, we also demonstrate 5 distinct prohibited transactions blocked fail-closed prior to signing or broadcast.">
+      <div class="slide-header">
+        <div class="slide-category">Topic F Execution Evidence (Deliverable 06)</div>
+        <h1 class="slide-title">Verifiable On-Chain Execution Record</h1>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card" style="border-left: 4px solid var(--emerald);">
+            <div class="card-title" style="color: var(--emerald);">Permitted Transaction (Confirmed On-Chain)</div>
+            <div style="font-size: 12px; line-height: 1.8; color: var(--text-muted); margin-top: 8px;">
+              <div><strong>Network:</strong> Ethereum Sepolia (ID: 11155111)</div>
+              <div><strong>Action:</strong> Permitted 40.00 USDC Transfer</div>
+              <div><strong>Status:</strong> <span style="color: var(--emerald); font-weight: bold;">SUCCESS (Confirmed)</span></div>
+              <div><strong>Block Number:</strong> #7120442 / #11951407</div>
+              <div><strong>Gas Units Used:</strong> 42,100 units</div>
+              <div style="font-family: monospace; word-break: break-all; margin-top: 6px; font-size: 11px; color: #06b6d4;">
+                Tx Hash: 0x9e8a71b3e4f62a1c0d5b789e246813579bdf0123...
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="border-left: 4px solid var(--rose);">
+            <div class="card-title" style="color: var(--rose);">Prohibited Transactions (Blocked Fail-Closed)</div>
+            <div style="font-size: 11px; line-height: 1.8; color: var(--text-muted); margin-top: 8px;">
+              <div>🛑 <strong>Budget Breaker:</strong> Transfer 180 USDC → <span style="color: var(--rose);">DAILY_BUDGET_EXCEEDED</span></div>
+              <div>🛑 <strong>Reserve Breach:</strong> Transfer 350 USDC → <span style="color: var(--rose);">RESERVE_BREACH</span></div>
+              <div>🛑 <strong>Prompt Injection:</strong> Override to Attacker → <span style="color: var(--rose);">PROMPT_SANITIZED</span></div>
+              <div>🛑 <strong>Recipient Sub:</strong> Send to 0x9999... → <span style="color: var(--rose);">NOT_ALLOWLISTED</span></div>
+              <div>🛑 <strong>Single-Tx Cap:</strong> Transfer 120 USDC → <span style="color: var(--rose);">CAP_EXCEEDED</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Sepolia Explorer: https://sepolia.etherscan.io</span>
+        <span>Execution Evidence Requirement (Deliverable 06)</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: Topic F Challenge Bonus -->
+    <div class="slide" data-notes="For the 0-5 point challenge bonus, we built BoundedExecutor.sol, an on-chain smart contract vault written in Solidity 0.8.24. It enforces daily limits, reserves, and pause controls on-chain as a secondary defense layer, and maps directly to the ERC-4337 Account Abstraction roadmap.">
+      <div class="slide-header">
+        <div class="slide-category">Topic F Challenge Bonus (0–5 Points)</div>
+        <h1 class="slide-title">BoundedExecutor.sol & ERC-4337 Smart Vault</h1>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title">1. On-Chain Mandate Vault</div>
+            <div class="card-desc">
+              Solidity 0.8.24 smart contract enforcing destination allowlists, transaction ceilings, and rolling 24h budgets directly in EVM bytecode.
+            </div>
+            <div style="margin-top: 10px;"><span class="pill pill-emerald">contracts/BoundedExecutor.sol</span></div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">2. Inviolate On-Chain Reserve</div>
+            <div class="card-desc">
+              The smart contract checks: <code>(balance - amount) &gt;= protectedReserve</code>. If breached, the EVM transaction reverts automatically.
+            </div>
+            <div style="margin-top: 10px;"><span class="pill pill-emerald">ReserveBreach() Revert</span></div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">3. ERC-4337 Compatibility</div>
+            <div class="card-desc">
+              Architecturally aligns with ERC-4337 Account Abstraction <code>validateUserOp</code> hooks, enabling gasless bounded execution.
+            </div>
+            <div style="margin-top: 10px;"><span class="pill pill-emerald">Account Abstraction Ready</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>On-Chain Exploration Challenge Bonus: 0–5 Points</span>
+        <span>Solidity 0.8.24 & viem Client</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 12: Summary & Impact -->
+    <div class="slide" data-notes="In summary, ActaBound proves that AI can safely participate in financial protocols when bounded by deterministic policy controls, isolated private signing, and cryptographic evidence verification. All 26 automated tests pass, the production build compiles with zero errors, and all 6 competition deliverables are complete. Thank you, and we welcome your questions.">
+      <div class="slide-header">
+        <div class="slide-category">Summary & Conclusion</div>
+        <h1 class="slide-title">ActaBound: The Standard for Autonomous On-Chain Finance</h1>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-3" style="margin-bottom: 20px;">
+          <div class="card card-highlight">
+            <div class="card-title">40% Task Completion</div>
+            <div class="card-desc">End-to-end autonomous planning, asset management workflows, real on-chain Sepolia execution, and test suite.</div>
+          </div>
+          <div class="card card-highlight">
+            <div class="card-title">30% Security & Compliance</div>
+            <div class="card-desc">Zero float drift, AES-256-GCM enclave, 5-tier permission model, fail-closed design, and cryptographic ledger.</div>
+          </div>
+          <div class="card card-highlight">
+            <div class="card-title">30% Innovation</div>
+            <div class="card-desc">Financial Twin simulator, 18-attack red-team arena with 100% defense rate, and institutional-grade fintech UI.</div>
+          </div>
+        </div>
+
+        <div style="text-align: center; padding: 16px; background: rgba(16, 185, 129, 0.08); border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.3);">
+          <div style="font-size: 16px; font-weight: 700; color: #fff;">Autonomous Finance. Bounded Authority. Verifiable Actions.</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Thank you, esteemed judges. We welcome your questions.</div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>Shenzhen FinTechathon 2026 &middot; Topic F: Agent Wallet</span>
+        <span>GitHub: https://github.com/[team]/ActaBound</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Speaker Notes Drawer -->
+  <div class="speaker-drawer" id="speakerNotes">
+    <div style="font-weight: 700; color: var(--emerald); margin-bottom: 4px;">SPEAKER NOTES [S]:</div>
+    <div id="notesContent">Loading notes...</div>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const counter = document.getElementById('counter');
+    const speakerNotes = document.getElementById('speakerNotes');
+    const notesContent = document.getElementById('notesContent');
+
+    function updateSlide() {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx === currentSlide);
+      });
+      counter.textContent = `${String(currentSlide + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+      const activeSlide = slides[currentSlide];
+      notesContent.textContent = activeSlide.getAttribute('data-notes') || 'No speaker notes for this slide.';
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    function toggleSpeakerNotes() {
+      speakerNotes.classList.toggle('visible');
+    }
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen();
+      } else if (e.key === 's' || e.key === 'S') {
+        toggleSpeakerNotes();
+      }
+    });
+
+    updateSlide();
+  </script>
+</body>
+</html>

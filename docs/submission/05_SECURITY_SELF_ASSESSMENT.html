@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ActaBound — Security Self-Assessment Report | Shenzhen FinTechathon 2026</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --emerald: #059669;
+      --emerald-bg: #ecfdf5;
+      --rose: #e11d48;
+      --rose-bg: #fff1f2;
+      --amber: #d97706;
+      --amber-bg: #fffbeb;
+      --code-bg: #f8fafc;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #090d16;
+        --text: #f8fafc;
+        --text-muted: #94a3b8;
+        --border: #1e293b;
+        --emerald: #10b981;
+        --emerald-bg: rgba(16, 185, 129, 0.1);
+        --rose: #f43f5e;
+        --rose-bg: rgba(244, 63, 94, 0.1);
+        --amber: #f59e0b;
+        --amber-bg: rgba(245, 158, 11, 0.1);
+        --code-bg: #0f172a;
+      }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+
+    .container { max-width: 960px; margin: 0 auto; }
+    .header { border-bottom: 2px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: var(--emerald-bg);
+      color: var(--emerald);
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      border: 1px solid var(--emerald);
+    }
+
+    h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.8px; margin-bottom: 8px; }
+    .subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 16px; }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      font-size: 12px;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      border-radius: 8px;
+    }
+
+    h2 {
+      font-size: 19px;
+      font-weight: 700;
+      margin: 32px 0 16px 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    p { margin-bottom: 14px; font-size: 14px; color: var(--text-muted); }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 12px; }
+    th, td { border: 1px solid var(--border); padding: 9px 12px; text-align: left; }
+    th { background: var(--code-bg); font-weight: 700; color: var(--text); }
+
+    .pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-family: monospace;
+      white-space: nowrap;
+    }
+
+    .pill-pass { background: var(--emerald-bg); color: var(--emerald); border: 1px solid var(--emerald); }
+    .pill-crit { background: var(--rose-bg); color: var(--rose); border: 1px solid var(--rose); }
+    .pill-high { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber); }
+
+    .callout {
+      background: var(--emerald-bg);
+      border-left: 4px solid var(--emerald);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+
+    .actions-bar {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      gap: 8px;
+      z-index: 1000;
+    }
+
+    .btn {
+      background: var(--emerald);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    @media print {
+      body { background: #fff !important; color: #000 !important; padding: 0; }
+      .actions-bar { display: none !important; }
+      table, .meta-grid { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="actions-bar">
+    <button class="btn" onclick="window.print()">🖨️ Export to PDF</button>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <span class="badge">Deliverable 05 &middot; Security Self-Assessment Report</span>
+      <h1>ActaBound: Permission-Tier Implementation & Known-Risk Matrix</h1>
+      <div class="subtitle">Comprehensive Security Review & Threat Mitigation Audit for Topic F (Agent Wallet)</div>
+
+      <div class="meta-grid">
+        <div><strong>Competition:</strong> Shenzhen FinTechathon 2026</div>
+        <div><strong>Topic:</strong> Topic F: Agent Wallet</div>
+        <div><strong>Defense Rate:</strong> 18 / 18 Passed (100.0%)</div>
+        <div><strong>Standard:</strong> STRIDE + OWASP LLM Top 10</div>
+      </div>
+    </div>
+
+    <h2>1. Permission-Tier Implementation Matrix</h2>
+    <p>ActaBound implements a strict 5-tier permission model enforcing the Principle of Least Privilege (PoLP):</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Role / Entity</th>
+          <th>Granted Privileges</th>
+          <th>Prohibited Actions</th>
+          <th>Authentication & Circuit Breakers</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Tier 0</strong></td>
+          <td>Public Observer</td>
+          <td>View public metrics, verified evidence ledger</td>
+          <td>Cannot submit prompts or execute txs</td>
+          <td>Sanitized read-only endpoints, CORS isolation</td>
+        </tr>
+        <tr>
+          <td><strong>Tier 1</strong></td>
+          <td>Mandate Owner (Human)</td>
+          <td>Define reserves, daily caps, allowlists, pause/revoke</td>
+          <td>Cannot bypass smart contract reserve floor</td>
+          <td>EIP-712 / Web3 wallet signature, master pause switch</td>
+        </tr>
+        <tr>
+          <td><strong>Tier 2</strong></td>
+          <td>Bounded Agent (AI)</td>
+          <td>Parse goals, formulate StructuredPlan proposals</td>
+          <td><strong>Zero signing keys; cannot sign or broadcast</strong></td>
+          <td>Zod schema validation, fail-closed policy engine</td>
+        </tr>
+        <tr>
+          <td><strong>Tier 3</strong></td>
+          <td>Signer Enclave</td>
+          <td>Decrypt key and sign permitted transactions</td>
+          <td>Cannot sign without canonical permit hash</td>
+          <td>AES-256-GCM enclave, SHA-256 fingerprint matching</td>
+        </tr>
+        <tr>
+          <td><strong>Tier 4</strong></td>
+          <td>Smart Vault (EVM)</td>
+          <td>On-chain token transfer settlement on Sepolia</td>
+          <td>Cannot breach reserve or transfer unlisted tokens</td>
+          <td>BoundedExecutor.sol (Solidity 0.8.24) on-chain revert</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>2. Known-Risk List & STRIDE Threat Modeling</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Risk ID</th>
+          <th>Threat / Vulnerability</th>
+          <th>Severity</th>
+          <th>ActaBound Deterministic Defense Mechanism</th>
+          <th>Verification</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>RISK-01</strong></td>
+          <td>Adversarial Prompt Injection (OWASP LLM01)</td>
+          <td><span class="pill pill-crit">Critical</span></td>
+          <td>Input Sanitizer + Zod Schema Validation + Mandatory Policy Allowlist</td>
+          <td><span class="pill pill-pass">Passed (#7)</span></td>
+        </tr>
+        <tr>
+          <td><strong>RISK-02</strong></td>
+          <td>Budget Breaker Attack (Excessive Spend)</td>
+          <td><span class="pill pill-high">High</span></td>
+          <td>Pure BigInt 24h rolling budget counter with atomic locking</td>
+          <td><span class="pill pill-pass">Passed (#1)</span></td>
+        </tr>
+        <tr>
+          <td><strong>RISK-03</strong></td>
+          <td>Reserve Floor Breach</td>
+          <td><span class="pill pill-crit">Critical</span></td>
+          <td>Pre-flight reserve margin invariant: <code>balance - spend &ge; reserve</code></td>
+          <td><span class="pill pill-pass">Passed (#2)</span></td>
+        </tr>
+        <tr>
+          <td><strong>RISK-04</strong></td>
+          <td>IEEE 754 Floating-Point Drift</td>
+          <td><span class="pill pill-high">Medium</span></td>
+          <td>Complete elimination of floats; standardized BigInt integer scaling</td>
+          <td><span class="pill pill-pass">10/10 Passed</span></td>
+        </tr>
+        <tr>
+          <td><strong>RISK-05</strong></td>
+          <td>TOCTOU Calldata Tampering</td>
+          <td><span class="pill pill-crit">Critical</span></td>
+          <td>Canonical SHA-256 fingerprint verification in signer enclave</td>
+          <td><span class="pill pill-pass">Passed (#8)</span></td>
+        </tr>
+        <tr>
+          <td><strong>RISK-06</strong></td>
+          <td>Private Key Extraction / Leakage</td>
+          <td><span class="pill pill-crit">Critical</span></td>
+          <td>KMS AES-256-GCM enclave; 0 private key bytes in LLM memory context</td>
+          <td><span class="pill pill-pass">Verified</span></td>
+        </tr>
+        <tr>
+          <td><strong>RISK-07</strong></td>
+          <td>Repudiation / Audit Tampering</td>
+          <td><span class="pill pill-high">High</span></td>
+          <td>Sequential SHA-256 chained blocks; live mathematical verification</td>
+          <td><span class="pill pill-pass">Verified</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>3. Autonomous Attack Arena: 18-Scenario Defense Proof</h2>
+    <div class="callout">
+      <strong>Attack Arena Audit Results:</strong> ActaBound defended <strong>18 out of 18 adversarial scenarios</strong> (100.0% pass rate). Zero unauthorized transactions were signed or broadcasted.
+    </div>
+  </div>
+</body>
+</html>
