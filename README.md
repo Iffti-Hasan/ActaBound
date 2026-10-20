@@ -1,4 +1,4 @@
-# 🛡️ ActaBound: Mandate-Governed Autonomous On-Chain Wallet
+# <h2> 🛡️ ActaBound: Mandate-Governed Autonomous On-Chain Wallet </h2>
 
 [![Network: Sepolia](https://img.shields.io/badge/Network-Ethereum_Sepolia_(11155111)-627EEA?logo=ethereum)](https://sepolia.etherscan.io/address/0x742d35Cc6634C0532925a3b844Bc454e4438f44e)
 [![Tests: Vitest](https://img.shields.io/badge/Tests-26%20Passed%20(100%25)-success?logo=vitest)](./src/test)
